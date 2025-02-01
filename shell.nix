@@ -29,6 +29,15 @@ let
             })
          ];
   });
+  mig-r =
+    (rWrapper.override {
+      packages = rpkgs;
+    });
+  mig-quarto = [
+    (quarto.override {
+      extraRPackages = rpkgs;
+    })
+  ];
 in
 pkgs.mkShell {
   buildInputs = [
@@ -54,7 +63,6 @@ pkgs.mkShell {
     libssh2
     curl # sf and RCall use same then, but ArchGDAL then won't work
     julia
-    my-r
     gdal
     hdf5
   ];
