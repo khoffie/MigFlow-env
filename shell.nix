@@ -5,11 +5,14 @@ let
   mig-r = (pkgs.rWrapper.override {
          packages = with pkgs.rPackages; [
             (buildRPackage {
+              name = "mig-helper"; # The package is stil called helpeR
+              version = "61b1cbd";
+              sha256 = "sha256-FMXCTpoGdflhdvgbjd8iWGtgLzzYSd7zndiIlS1cqTc=";
               src = fetchFromGitHub {
                 owner = "khoffie";
-                name = "MigFlow-helpeR";
+                repo = "MigFlow-helpeR";
                 rev = "61b1cbd";
-                hash = "sha256-FMXCTpoGdflhdvgbjd8iWGtgLzzYSd7zndiIlS1cqTc=";
+                sha256 = "sha256-FMXCTpoGdflhdvgbjd8iWGtgLzzYSd7zndiIlS1cqTc=";
               };
               propagatedBuildInputs = [
                 data_table
