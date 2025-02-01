@@ -4,9 +4,27 @@ with import <nixpkgs> {};
 let
   mig-r = (pkgs.rWrapper.override {
          packages = with pkgs.rPackages; [
-           sf
-         ]; # Include sf inside Nix
-       });
+            (buildRPackage {
+              src = fetchFromGitHub {
+                owner = "khoffie";
+                name = "MigFlow-helpeR";
+                rev = "61b1cbd";
+                hash = "sha256-FMXCTpoGdflhdvgbjd8iWGtgLzzYSd7zndiIlS1cqTc=";
+              };
+              propagatedBuildInputs = [
+                data_table
+                ggplot2
+                tinytex
+                bookdown
+                sf
+                patchwork
+                ggthemes
+                ggtext
+                readxl
+              ];
+            })
+         ];
+  });
 in
 pkgs.mkShell {
   buildInputs = [
@@ -32,7 +50,6 @@ pkgs.mkShell {
     curl
     julia
     mig-r
-    
   ];
   NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
   ## RCall does find base r packages with LD_LIBRARY_PATH=${mig-r}/lib/R/lib
