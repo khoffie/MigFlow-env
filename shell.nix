@@ -40,14 +40,9 @@ pkgs.mkShell {
   ##
     shellHook = ''
     export R_HOME="${mig-r}/lib/R"
-    # export R_LIBS="${mig-r}/lib/R/library"
-    ## export LD_LIBRARY_PATH="${mig-r}/lib/R/lib:$NIX_LD_LIBRARY_PATH:$LD_LIBRARY_PATH"
-
     export LD_LIBRARY_PATH="${mig-r}/lib/R/lib":$NIX_LD_LIBRARY_PATH
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     echo "Environment variables for R set."
-
-    echo "This is LD_LIBRARY_PATH $(printenv LD_LIBRARY_PATH)"
     julia -e 'using Pkg; Pkg.build("RCall"); using RCall; R".libPaths()"; R"library(sf)"'
   '';
 
