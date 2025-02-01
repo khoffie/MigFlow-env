@@ -4,6 +4,7 @@ with import <nixpkgs> {};
 let
   mig-r = (pkgs.rWrapper.override {
          packages = with pkgs.rPackages; [
+           sf
             (buildRPackage {
               name = "mig-helper"; # The package is stil called helpeR
               version = "61b1cbd";
@@ -46,13 +47,16 @@ pkgs.mkShell {
     gfortran
     stdenv
     openspecfun
+    libtiff
     proj
     sqlite
     geos
     libssh2
-    curl
+    curl # sf and RCall use same then, but ArchGDAL then won't work
     julia
     mig-r
+    gdal
+    hdf5
   ];
   NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
   ## RCall does find base r packages with LD_LIBRARY_PATH=${mig-r}/lib/R/lib
@@ -66,5 +70,4 @@ pkgs.mkShell {
     cd ../mig-code
     julia -e 'using Pkg; Pkg.activate(".")'
   '';
-
 }
