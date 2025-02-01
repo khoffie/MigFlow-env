@@ -2,7 +2,7 @@
 
 with import <nixpkgs> {};
 let
-  mig-r = (pkgs.rWrapper.override {
+  my-r = (pkgs.rWrapper.override {
          packages = with pkgs.rPackages; [
            sf
             (buildRPackage {
@@ -32,7 +32,7 @@ let
 in
 pkgs.mkShell {
   buildInputs = [
-    mig-r
+    my-r
     julia-lts
     curl
     gdal
@@ -54,17 +54,17 @@ pkgs.mkShell {
     libssh2
     curl # sf and RCall use same then, but ArchGDAL then won't work
     julia
-    mig-r
+    my-r
     gdal
     hdf5
   ];
   NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
-  ## RCall does find base r packages with LD_LIBRARY_PATH=${mig-r}/lib/R/lib
+  ## RCall does find base r packages with LD_LIBRARY_PATH=${my-r}/lib/R/lib
   ## Then NIX_LD_LIBRARY_PATH needs to follow so that the currect libcurl version is used
   ##
     shellHook = ''
-    export R_HOME="${mig-r}/lib/R"
-    export LD_LIBRARY_PATH="${mig-r}/lib/R/lib":$NIX_LD_LIBRARY_PATH
+    export R_HOME="${my-r}/lib/R"
+    export LD_LIBRARY_PATH="${my-r}/lib/R/lib":$NIX_LD_LIBRARY_PATH
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     echo "Environment variables for R set."
     cd ../mig-code
