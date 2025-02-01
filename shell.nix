@@ -39,6 +39,7 @@ pkgs.mkShell {
     export R_LIBS="${mig-r}/lib/R/library"
     export LD_LIBRARY_PATH="${mig-r}/lib/R/lib:$LD_LIBRARY_PATH"
     echo "Environment variables for R set."
+    julia -e 'using Pkg; Pkg.build("RCall"); using RCall; R".libPaths()"; R"library(sf)"'
   '';
 
 }
