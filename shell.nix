@@ -43,7 +43,8 @@ pkgs.mkShell {
     export LD_LIBRARY_PATH="${mig-r}/lib/R/lib":$NIX_LD_LIBRARY_PATH
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     echo "Environment variables for R set."
-    julia -e 'using Pkg; Pkg.build("RCall"); using RCall; R".libPaths()"; R"library(sf)"'
+    cd ../mig-code
+    julia -e 'using Pkg; Pkg.activate(".")'
   '';
 
 }
