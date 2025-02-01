@@ -1,12 +1,16 @@
   # shell.nix
+
 with import <nixpkgs> {};
+let
+  mig-r = (pkgs.rWrapper.override {
+         packages = with pkgs.rPackages; [
+           sf
+         ]; # Include sf inside Nix
+       });
+in
 pkgs.mkShell {
   buildInputs = [
-     (pkgs.rWrapper.override {
-       packages = with pkgs.rPackages; [
-         sf
-      ]; # Include sf inside Nix
-     })
+    mig-r
      julia-lts
      curl
      gdal
@@ -26,15 +30,14 @@ pkgs.mkShell {
     sqlite
     geos
     libssh2
-    R
+    mig-r
     julia
   ];
   NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
     shellHook = ''
-    export R_HOME="${pkgs.R}/lib/R"
-    export R_LIBS="${pkgs.R}/lib/R/library"
-    export LD_LIBRARY_PATH="${pkgs.R}/lib/R/lib:$LD_LIBRARY_PATH"
-
+    export R_HOME="${mig-r}/lib/R"
+    export R_LIBS="${mig-r}/lib/R/library"
+    export LD_LIBRARY_PATH="${mig-r}/lib/R/lib:$LD_LIBRARY_PATH"
     echo "Environment variables for R set."
   '';
 
