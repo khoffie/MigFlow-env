@@ -11,14 +11,14 @@ in
 pkgs.mkShell {
   buildInputs = [
     mig-r
-     julia-lts
-     curl
-     gdal
-     proj
-     sqlite
-     geos
-     which
-     nix-ld
+    julia-lts
+    curl
+    gdal
+    proj
+    sqlite
+    geos
+    which
+    nix-ld
   ];
   NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
     gcc  # ...
