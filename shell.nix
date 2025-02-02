@@ -5,6 +5,17 @@ let
   my-r = (pkgs.rWrapper.override {
          packages = with pkgs.rPackages; [
            sf
+           quarto
+           data_table
+           ggplot2
+           ggthemes
+           ggtext
+           patchwork
+           knitr
+           kableExtra
+           latex2exp
+           devtools
+           readxl
             (buildRPackage {
               name = "mig-helper"; # The package is stil called helpeR
               version = "61b1cbd";
