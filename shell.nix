@@ -38,6 +38,21 @@ let
                 readxl
               ];
             })
+           (buildRPackage {
+             name = "mig-reporter"; # The package is stil called helpeR
+             version = "09d969a";
+             sha256 = "sha256-HhCusJM46/4yHp+a1B4Nj6QrmiWGLomzFvUYoB8H7pQ=";
+             src = fetchFromGitHub {
+               owner = "khoffie";
+               repo = "MigFlow-reporter";
+               rev = "09d969a";
+               sha256 = "sha256-HhCusJM46/4yHp+a1B4Nj6QrmiWGLomzFvUYoB8H7pQ=";
+             };
+             propagatedBuildInputs = [
+               data_table
+               ggplot2
+             ];
+           })
          ];
   });
   mig-r =
