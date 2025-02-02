@@ -101,7 +101,5 @@ pkgs.mkShell {
     export LD_LIBRARY_PATH="${my-r}/lib/R/lib":$NIX_LD_LIBRARY_PATH
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     echo "Environment variables for R set."
-    cd ../mig-code
-    julia -e 'using Pkg; Pkg.activate(".")'
-  '';
+      '';
 }
