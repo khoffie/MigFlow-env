@@ -16,6 +16,7 @@ let
            latex2exp
            devtools
            readxl
+           lintr ## for emacs flyspell syntax checker
             (buildRPackage {
               name = "mig-helper"; # The package is stil called helpeR
               version = "61b1cbd";
