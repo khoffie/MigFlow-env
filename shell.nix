@@ -41,13 +41,13 @@ let
             })
            (buildRPackage {
              name = "mig-reporter"; # The package is stil called helpeR
-             version = "09d969a";
-             sha256 = "sha256-HhCusJM46/4yHp+a1B4Nj6QrmiWGLomzFvUYoB8H7pQ=";
+             version = "564f674";
+             sha256 = "sha256-VGES71j+/7ntHvrtSrDsHC6Gm10NwIguJfNhgOt9pcE=";
              src = fetchFromGitHub {
                owner = "khoffie";
                repo = "MigFlow-reporter";
-               rev = "09d969a";
-               sha256 = "sha256-HhCusJM46/4yHp+a1B4Nj6QrmiWGLomzFvUYoB8H7pQ=";
+               rev = "564f674";
+               sha256 = "sha256-VGES71j+/7ntHvrtSrDsHC6Gm10NwIguJfNhgOt9pcE=";
              };
              propagatedBuildInputs = [
                data_table
