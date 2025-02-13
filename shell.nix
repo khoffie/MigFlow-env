@@ -102,6 +102,8 @@ pkgs.mkShell {
     export R_HOME="${my-r}/lib/R"
     export LD_LIBRARY_PATH="${my-r}/lib/R/lib":$NIX_LD_LIBRARY_PATH
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
+    export JULIA_NUM_THREADS=4
+    export SSH_ASKPASS=""
     echo "Environment variables for R set."
       '';
 }
