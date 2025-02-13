@@ -69,6 +69,7 @@ in
 pkgs.mkShell {
   buildInputs = [
     my-r
+    quarto
     julia-lts
     curl
     gdal
