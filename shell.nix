@@ -19,13 +19,13 @@ let
            lintr ## for emacs flyspell syntax checker
             (buildRPackage {
               name = "mig-helper"; # The package is stil called helpeR
-              version = "61b1cbd";
-              sha256 = "sha256-FMXCTpoGdflhdvgbjd8iWGtgLzzYSd7zndiIlS1cqTc=";
+              version = "b2f36eb";
+              sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
               src = fetchFromGitHub {
                 owner = "khoffie";
                 repo = "MigFlow-helpeR";
-                rev = "61b1cbd";
-                sha256 = "sha256-FMXCTpoGdflhdvgbjd8iWGtgLzzYSd7zndiIlS1cqTc=";
+                rev = "b2f36eb";
+                sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
               };
               propagatedBuildInputs = [
                 data_table
