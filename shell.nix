@@ -77,6 +77,7 @@ let
     })
   ];
 in
+
 pkgs.mkShell {
   buildInputs = with pkgs; [
     my-cran-r
@@ -93,29 +94,30 @@ pkgs.mkShell {
     nix-ld
     librsvg ## needs quarto to render to pdf
   ];
-  NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
-    gcc  # ...
-    gfortran
-    stdenv
-    openspecfun
-    libtiff
-    proj
-    sqlite
-    geos
-    libssh2
-    curl # sf and RCall use same then, but ArchGDAL then won't work
-    julia
-    gdal
-    hdf5
-    librsvg
+
+  NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+    pkgs.gcc  # ...
+    pkgs.gfortran
+    pkgs.stdenv
+    pkgs.openspecfun
+    pkgs.libtiff
+    pkgs.proj
+    pkgs.sqlite
+    pkgs.geos
+    pkgs.libssh2
+    pkgs.curl # sf and RCall use same then, but ArchGDAL then won't work
+    pkgs.julia
+    pkgs.gdal
+    pkgs.hdf5
+    pkgs.librsvg
   ];
-  NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
+  NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
   ## RCall does find base r packages with LD_LIBRARY_PATH=${my-r}/lib/R/lib
   ## Then NIX_LD_LIBRARY_PATH needs to follow so that the currect libcurl version is used
   ##
     shellHook = ''
-    export R_HOME="${my-r}/lib/R"
-    export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH:"${my-r}/lib/R/lib"
+    export R_HOME="${my-cran-r}/lib/R"
+    export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH:"${my-cran-r}/lib/R/lib"
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     export JULIA_NUM_THREADS=4
     export SSH_ASKPASS=""
