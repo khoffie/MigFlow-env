@@ -1,11 +1,10 @@
   # shell.nix
 
-with import <nixpkgs> {};
 let
-  my-r = (pkgs.rWrapper.override {
+  pkgs =  import <nixpkgs> {};
+  my-cran-r = (pkgs.rWrapper.override {
          packages = with pkgs.rPackages; [
            sf
-           quarto
            data_table
            ggplot2
            ggthemes
@@ -16,7 +15,8 @@ let
            latex2exp
            devtools
            readxl
-           ## below packages are for thesis only
+           lintr ## for emacs flyspell syntax checker
+           ## packages below are for thesis only
            broom
            gridExtra
            gghighlight
@@ -25,19 +25,20 @@ let
            sfheaders
            kableExtra
            yaml
+         ];
+  });
 
-           lintr ## for emacs flyspell syntax checker
-            (buildRPackage {
+  helpeR = pkgs.rPackages.buildRPackage {
               name = "mig-helper"; # The package is stil called helpeR
               version = "b2f36eb";
               sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
-              src = fetchFromGitHub {
+              src = pkgs.fetchFromGitHub {
                 owner = "khoffie";
                 repo = "MigFlow-helpeR";
                 rev = "b2f36eb";
                 sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
               };
-              propagatedBuildInputs = [
+              propagatedBuildInputs = with pkgs.rPackages; [
                 data_table
                 ggplot2
                 tinytex
@@ -48,38 +49,42 @@ let
                 ggtext
                 readxl
               ];
-            })
-           (buildRPackage {
+  };
+
+  reporteR = pkgs.rPackages.buildRPackage {
              name = "mig-reporter"; # The package is stil called helpeR
              version = "b2f36eb";
              sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
-             src = fetchFromGitHub {
+             src = pkgs.fetchFromGitHub {
                owner = "khoffie";
                repo = "MigFlow-reporter";
                rev = "b2f36eb";
                sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
              };
-             propagatedBuildInputs = [
+             propagatedBuildInputs = with pkgs.rPackages; [
                data_table
                ggplot2
                sf
+               helpeR
              ];
-           })
-         ];
-  });
+  };
+
   mig-r =
-    (rWrapper.override {
-      packages = rpkgs;
+    (pkgs.rWrapper.override {
+      packages = pkgs.rpkgs;
     });
   mig-quarto = [
-    (quarto.override {
-      extraRPackages = rpkgs;
+    (pkgs.quarto.override {
+      extraRPackages = pkgs.rpkgs;
     })
   ];
 in
+
 pkgs.mkShell {
-  buildInputs = [
-    my-r
+  buildInputs = with pkgs; [
+    my-cran-r
+    helpeR
+    reporteR
     quarto
     julia-lts
     curl
@@ -91,29 +96,30 @@ pkgs.mkShell {
     nix-ld
     librsvg ## needs quarto to render to pdf
   ];
-  NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
-    gcc  # ...
-    gfortran
-    stdenv
-    openspecfun
-    libtiff
-    proj
-    sqlite
-    geos
-    libssh2
-    curl # sf and RCall use same then, but ArchGDAL then won't work
-    julia
-    gdal
-    hdf5
-    librsvg
+
+  NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+    pkgs.gcc  # ...
+    pkgs.gfortran
+    pkgs.stdenv
+    pkgs.openspecfun
+    pkgs.libtiff
+    pkgs.proj
+    pkgs.sqlite
+    pkgs.geos
+    pkgs.libssh2
+    pkgs.curl # sf and RCall use same then, but ArchGDAL then won't work
+    pkgs.julia
+    pkgs.gdal
+    pkgs.hdf5
+    pkgs.librsvg
   ];
-  NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
+  NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
   ## RCall does find base r packages with LD_LIBRARY_PATH=${my-r}/lib/R/lib
   ## Then NIX_LD_LIBRARY_PATH needs to follow so that the currect libcurl version is used
   ##
     shellHook = ''
-    export R_HOME="${my-r}/lib/R"
-    export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH:"${my-r}/lib/R/lib"
+    export R_HOME="${my-cran-r}/lib/R"
+    export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH:"${my-cran-r}/lib/R/lib"
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     export JULIA_NUM_THREADS=4
     export SSH_ASKPASS=""
