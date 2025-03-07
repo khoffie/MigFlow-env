@@ -88,6 +88,7 @@ pkgs.mkShell {
     geos
     which
     nix-ld
+    librsvg ## needs quarto to render to pdf
   ];
   NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
     gcc  # ...
@@ -103,6 +104,7 @@ pkgs.mkShell {
     julia
     gdal
     hdf5
+    librsvg
   ];
   NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
   ## RCall does find base r packages with LD_LIBRARY_PATH=${my-r}/lib/R/lib
