@@ -16,6 +16,16 @@ let
            latex2exp
            devtools
            readxl
+           ## below packages are for thesis only
+           broom
+           gridExtra
+           gghighlight
+           GGally
+           scales
+           sfheaders
+           kableExtra
+           yaml
+
            lintr ## for emacs flyspell syntax checker
             (buildRPackage {
               name = "mig-helper"; # The package is stil called helpeR
