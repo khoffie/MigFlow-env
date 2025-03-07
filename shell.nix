@@ -1,11 +1,10 @@
   # shell.nix
 
-with import <nixpkgs> {};
 let
-  my-r = (pkgs.rWrapper.override {
+  pkgs =  import <nixpkgs> {};
+  my-cran-r = (pkgs.rWrapper.override {
          packages = with pkgs.rPackages; [
            sf
-           quarto
            data_table
            ggplot2
            ggthemes
@@ -26,17 +25,20 @@ let
            sfheaders
            kableExtra
            yaml
-            (buildRPackage {
+         ];
+  });
+
+  helpeR = pkgs.rPackages.buildRPackage {
               name = "mig-helper"; # The package is stil called helpeR
               version = "b2f36eb";
               sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
-              src = fetchFromGitHub {
+              src = pkgs.fetchFromGitHub {
                 owner = "khoffie";
                 repo = "MigFlow-helpeR";
                 rev = "b2f36eb";
                 sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
               };
-              propagatedBuildInputs = [
+              propagatedBuildInputs = with pkgs.rPackages; [
                 data_table
                 ggplot2
                 tinytex
@@ -47,37 +49,39 @@ let
                 ggtext
                 readxl
               ];
-            })
-           (buildRPackage {
+  };
+
+  reporteR = pkgs.rPackages.buildRPackage {
              name = "mig-reporter"; # The package is stil called helpeR
              version = "564f674";
              sha256 = "sha256-VGES71j+/7ntHvrtSrDsHC6Gm10NwIguJfNhgOt9pcE=";
-             src = fetchFromGitHub {
+             src = pkgs.fetchFromGitHub {
                owner = "khoffie";
                repo = "MigFlow-reporter";
                rev = "564f674";
                sha256 = "sha256-VGES71j+/7ntHvrtSrDsHC6Gm10NwIguJfNhgOt9pcE=";
              };
-             propagatedBuildInputs = [
+             propagatedBuildInputs = with pkgs.rPackages; [
                data_table
                ggplot2
              ];
-           })
-         ];
-  });
+  };
+
   mig-r =
-    (rWrapper.override {
-      packages = rpkgs;
+    (pkgs.rWrapper.override {
+      packages = pkgs.rpkgs;
     });
   mig-quarto = [
-    (quarto.override {
-      extraRPackages = rpkgs;
+    (pkgs.quarto.override {
+      extraRPackages = pkgs.rpkgs;
     })
   ];
 in
 pkgs.mkShell {
-  buildInputs = [
-    my-r
+  buildInputs = with pkgs; [
+    my-cran-r
+    helpeR
+    reporteR
     quarto
     julia-lts
     curl
