@@ -29,14 +29,14 @@ let
   });
 
   helpeR = pkgs.rPackages.buildRPackage {
-              name = "mig-helper"; # The package is stil called helpeR
-              version = "b2f36eb";
-              sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
+              name = "helpeR";
+              version = "9716630";
+              sha256 = "sha256-F2/1IzhobtTpI5O7ZxsHopENNSJ42E22OZO8nZnjGPU=";
               src = pkgs.fetchFromGitHub {
                 owner = "khoffie";
                 repo = "MigFlow-helpeR";
-                rev = "b2f36eb";
-                sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
+                rev = "9716630";
+                sha256 = "sha256-F2/1IzhobtTpI5O7ZxsHopENNSJ42E22OZO8nZnjGPU=";
               };
               propagatedBuildInputs = with pkgs.rPackages; [
                 data_table
@@ -52,14 +52,14 @@ let
   };
 
   reporteR = pkgs.rPackages.buildRPackage {
-             name = "mig-reporter"; # The package is stil called helpeR
-             version = "b2f36eb";
-             sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
+             name = "reporteR";
+             version = "13f8a47";
+             sha256 = "sha256-o4y0iNX3f7ZjM2ngUuenxruDYlpQAkbSvIgK4ZPXx1c=";
              src = pkgs.fetchFromGitHub {
                owner = "khoffie";
                repo = "MigFlow-reporter";
-               rev = "b2f36eb";
-               sha256 = "sha256-uGp92HJ5g8HpvIMyV6zWrED1dQaqWBICtWQ0vCKY9CY=";
+               rev = "13f8a47";
+               sha256 = "sha256-o4y0iNX3f7ZjM2ngUuenxruDYlpQAkbSvIgK4ZPXx1c=";
              };
              propagatedBuildInputs = with pkgs.rPackages; [
                data_table
