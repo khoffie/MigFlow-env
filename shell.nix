@@ -113,5 +113,6 @@ pkgs.mkShell {
     export R_HOME="${my-cran-r}/lib/R"
     export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     echo "Environment variables for R set."
+    export SSH_ASKPASS="" ## Otherwise can't push to github
       '';
 }
