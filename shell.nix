@@ -97,32 +97,21 @@ pkgs.mkShell {
     librsvg ## needs quarto to render to pdf
   ];
 
-  NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-    pkgs.gcc  # ...
-    pkgs.gfortran
-    pkgs.stdenv
-    pkgs.openspecfun
-    pkgs.libtiff
-    pkgs.proj
-    pkgs.sqlite
-    pkgs.geos
-    pkgs.libssh2
-    pkgs.curl # sf and RCall use same then, but ArchGDAL then won't work
-    pkgs.julia
-    pkgs.gdal
-    pkgs.hdf5
-    pkgs.librsvg
-  ];
-  NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
-  ## RCall does find base r packages with LD_LIBRARY_PATH=${my-r}/lib/R/lib
-  ## Then NIX_LD_LIBRARY_PATH needs to follow so that the currect libcurl version is used
-  ##
     shellHook = ''
-    export R_HOME="${my-cran-r}/lib/R"
-    export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH:"${my-cran-r}/lib/R/lib"
-    export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
+    export JULIA_PATH="$HOME/.julia/juliaup/julia-1.11.5+0.x64.linux.gnu/bin"
+
+    if [ -x "$JULIA_PATH/julia" ]; then
+      echo "Julia already installed at $JULIA_PATH"
+    else
+      echo "Installing Julia via juliaup..."
+      curl -fsSL https://install.julialang.org | sh
+    fi
+    export PATH="$HOME/.julia/juliaup/julia-1.11.5+0.x64.linux.gnu/bin:$PATH"
+    export NIX_LD_LIBRARY_PATH="$HOME/.julia/juliaup/julia-1.11.5+0.x64.linux.gnu/lib/julia"
+
     export JULIA_NUM_THREADS=4
-    export SSH_ASKPASS=""
+    export R_HOME="${my-cran-r}/lib/R"
+    export R_LIBS_SITE=$(R -q -e 'cat(.libPaths(), sep = ":")')
     echo "Environment variables for R set."
       '';
 }
