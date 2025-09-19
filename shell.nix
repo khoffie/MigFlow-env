@@ -7,37 +7,18 @@ let
            data_table
            sf
            readxl
-           # ggplot2
-           # ggthemes
-           # ggtext
-           # patchwork
-           # knitr
-           # kableExtra
-           # latex2exp
-           # devtools
-           # readxl
-           # lintr ## for emacs flyspell syntax checker
-           # ## packages below are for thesis only
-           # broom
-           # gridExtra
-           # gghighlight
-           # GGally
-           # scales
-           # sfheaders
-           # kableExtra
-           # yaml
          ];
   });
 
   helpeR = pkgs.rPackages.buildRPackage {
               name = "helpeR";
-              version = "a709261";
-              sha256 = "sha256-UjDSiLCrhynC4Wu4LFkX8DGVtmsCsLKyn3j0OA54V/o=";
+              version = "a079313";
+              sha256 = "sha256-ZlExia8Gm8huN56GaHaKczZ7aJcOl0vD5nexgqE1ttE=";
               src = pkgs.fetchFromGitHub {
                 owner = "khoffie";
                 repo = "MigFlow-helpeR";
-                rev = "a709261";
-                sha256 = "sha256-UjDSiLCrhynC4Wu4LFkX8DGVtmsCsLKyn3j0OA54V/o=";
+                rev = "a079313";
+                sha256 = "sha256-ZlExia8Gm8huN56GaHaKczZ7aJcOl0vD5nexgqE1ttE=";
               };
               propagatedBuildInputs = with pkgs.rPackages; [
                 data_table
@@ -46,24 +27,6 @@ let
                 readxl
               ];
   };
-
-  # reporteR = pkgs.rPackages.buildRPackage {
-  #            name = "reporteR";
-  #            version = "13f8a47";
-  #            sha256 = "sha256-o4y0iNX3f7ZjM2ngUuenxruDYlpQAkbSvIgK4ZPXx1c=";
-  #            src = pkgs.fetchFromGitHub {
-  #              owner = "khoffie";
-  #              repo = "MigFlow-reporter";
-  #              rev = "13f8a47";
-  #              sha256 = "sha256-o4y0iNX3f7ZjM2ngUuenxruDYlpQAkbSvIgK4ZPXx1c=";
-  #            };
-  #            propagatedBuildInputs = with pkgs.rPackages; [
-  #              data_table
-  #              ggplot2
-  #              sf
-  #              helpeR
-  #            ];
-  # };
 
   mig-r =
     (pkgs.rWrapper.override {
