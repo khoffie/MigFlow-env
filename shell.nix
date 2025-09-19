@@ -30,23 +30,18 @@ let
 
   helpeR = pkgs.rPackages.buildRPackage {
               name = "helpeR";
-              version = "9716630";
-              sha256 = "sha256-F2/1IzhobtTpI5O7ZxsHopENNSJ42E22OZO8nZnjGPU=";
+              version = "a709261";
+              sha256 = "sha256-UjDSiLCrhynC4Wu4LFkX8DGVtmsCsLKyn3j0OA54V/o=";
               src = pkgs.fetchFromGitHub {
                 owner = "khoffie";
                 repo = "MigFlow-helpeR";
-                rev = "9716630";
-                sha256 = "sha256-F2/1IzhobtTpI5O7ZxsHopENNSJ42E22OZO8nZnjGPU=";
+                rev = "a709261";
+                sha256 = "sha256-UjDSiLCrhynC4Wu4LFkX8DGVtmsCsLKyn3j0OA54V/o=";
               };
               propagatedBuildInputs = with pkgs.rPackages; [
                 data_table
-                ggplot2
                 tinytex
-                bookdown
                 sf
-                patchwork
-                ggthemes
-                ggtext
                 readxl
               ];
   };
